@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GreenAura — Elegant, Friendly, Professional</title>
+  <style>
+    :root {
+      --emerald-900: #064e3b;
+      --emerald-700: #047857;
+      --emerald-600: #059669;
+      --emerald-500: #10b981;
+      --emerald-100: #d1fae5;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-200: #e2e8f0;
+      --white: #ffffff;
+      --bg: #f7fff9;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--slate-800);
+    }
+    a { color: var(--emerald-700); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Header */
+    header {
+      position: sticky; top: 0; z-index: 50; backdrop-filter: blur(6px);
+      background: rgba(255,255,255,0.85); border-bottom: 1px solid var(--slate-200);
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; color: var(--emerald-900); }
+    .leaf { width: 34px; height: 34px; border-radius: 12px; background: var(--emerald-600); display: grid; place-items: center; color: white; box-shadow: 0 6px 18px rgba(5,150,105,0.25); font-weight: 900; }
+    .links { display: flex; gap: 14px; }
+    .links a { padding: 8px 10px; border-radius: 10px; color: var(--slate-700); font-weight: 600; }
+    .links a.active, .links a:hover { background: var(--emerald-100); color: var(--emerald-700); text-decoration: none; }
+    .btn { appearance: none; border: 0; padding: 10px 14px; border-radius: 14px; background: var(--emerald-600); color: white; font-weight: 700; cursor: pointer; box-shadow: 0 10px 20px rgba(5,150,105,0.25); }
+    .btn.secondary { background: white; color: var(--emerald-700); border: 1px solid var(--emerald-600); box-shadow: none; }
+    .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+    /* Sections */
+    section { scroll-margin-top: 80px; }
+    .hero {
+      background: linear-gradient(120deg, var(--emerald-700), var(--emerald-500)), url('https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop') center/cover no-repeat;
+      color: white; padding: 80px 0; position: relative; isolation: isolate;
+    }
+    .hero .container { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; align-items: center; }
+    .hero h1 { font-size: clamp(28px, 4vw, 52px); line-height: 1.1; margin: 0 0 10px; }
+    .hero p { opacity: 0.95; margin: 0 0 16px; font-size: clamp(14px, 2vw, 18px); }
+    .hero-card { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); padding: 16px; border-radius: 16px; backdrop-filter: blur(4px); }
+
+    .section { padding: 56px 0; }
+    .section h2 { margin: 0 0 16px; color: var(--emerald-900); font-size: clamp(22px, 3vw, 34px); }
+    .muted { color: var(--slate-600); }
+
+    /* Cards/Grid */
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 18px; }
+    .card { background: white; border: 1px solid var(--slate-200); border-radius: 16px; padding: 16px; box-shadow: 0 6px 18px rgba(2, 6, 23, 0.04); }
+    .card h3 { margin: 10px 0 6px; }
+    .img { width: 100%; aspect-ratio: 4/3; object-fit: cover; border-radius: 12px; }
+
+    /* Footer */
+    footer { border-top: 1px solid var(--slate-200); background: white; }
+    .footer-inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 18px 0; }
+
+    /* Admin */
+    #admin { display: none; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; background: var(--emerald-100); padding: 6px; border-radius: 14px; }
+    .tab { border: 0; padding: 10px 12px; border-radius: 12px; background: transparent; cursor: pointer; font-weight: 700; color: var(--emerald-900); }
+    .tab.active { background: white; border: 1px solid var(--emerald-600); color: var(--emerald-700); }
+    .kpis { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+    .kpi { background: white; border: 1px solid var(--slate-200); border-radius: 14px; padding: 14px; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table th, .table td { padding: 10px 8px; border-bottom: 1px solid var(--slate-200); text-align: left; }
+    .table th { background: #f1f5f9; color: var(--slate-700); }
+    .toolbar { display: flex; gap: 8px; align-items: center; justify-content: space-between; margin-bottom: 10px; flex-wrap: wrap; }
+    .input, select { padding: 10px 12px; border: 1px solid var(--slate-200); border-radius: 10px; min-width: 180px; }
+    .badge { display: inline-block; padding: 4px 10px; background: var(--emerald-100); border: 1px solid var(--emerald-600); color: var(--emerald-700); border-radius: 999px; font-size: 12px; }
+
+    /* Modal */
+    .modal-backdrop { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.5); display: none; align-items: center; justify-content: center; padding: 16px; }
+    .modal { width: 100%; max-width: 560px; background: white; border: 1px solid var(--slate-200); border-radius: 16px; padding: 16px; }
+    .modal header { position: relative; border: 0; background: transparent; }
+    .close { background: transparent; border: 0; font-size: 18px; cursor: pointer; }
+
+    /* Hide/show helpers */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand"><div class="leaf">🌿</div> GreenAura</div>
+      <nav class="links">
+        <a href="#home" data-link class="active">Home</a>
+        <a href="#shop" data-link>Shop</a>
+        <a href="#blog" data-link>Blog</a>
+        <a href="#contact" data-link>Contact</a>
+        <a href="#admin" id="adminLink" data-link>Admin</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Public Site -->
+  <main id="home" class="hero">
+    <div class="container">
+      <div>
+        <h1>Eco‑friendly care for a brighter tomorrow</h1>
+        <p>Professional. Elegant. Friendly. GreenAura blends science with nature to craft planet‑kind products that truly work.</p>
+        <div style="display:flex; gap:10px; margin-top:10px">
+          <button class="btn" onclick="scrollToId('shop')">Explore Products</button>
+          <button class="btn secondary" onclick="scrollToId('contact')">Contact Us</button>
+        </div>
+        <p class="muted" style="margin-top:12px">Cruelty‑free • Recyclable • Paraben‑free</p>
+      </div>
+      <div class="hero-card">
+        <b>Support:</b> <a href="mailto:michellenesfield94@gmail.com">michellenesfield94@gmail.com</a>
+        <p class="muted" style="margin:8px 0 0">We reply within 24–48 hours.</p>
+      </div>
+    </div>
+  </main>
+
+  <section id="shop" class="section">
+    <div class="container">
+      <h2>Shop</h2>
+      <p class="muted">Curated, sustainable essentials that feel as good as they look.</p>
+      <div class="toolbar">
+        <input id="productSearch" class="input" placeholder="Search products…" />
+        <select id="productFilter"></select>
+        <div style="flex:1"></div>
+        <button class="btn" onclick="goAdmin('products')">Manage Products</button>
+      </div>
+      <div id="productGrid" class="grid"></div>
+    </div>
+  </section>
+
+  <section id="blog" class="section">
+    <div class="container">
+      <h2>From the Blog</h2>
+      <div class="grid" id="blogGrid"></div>
+    </div>
+  </section>
+
+  <section id="contact" class="section">
+    <div class="container">
+      <h2>Contact</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>Write to us</h3>
+          <p class="muted">We'd love to hear from you.</p>
+          <form id="contactForm" onsubmit="sendMessage(event)">
+            <div style="display:grid; gap:10px; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));">
+              <input class="input" name="name" placeholder="Your name" required />
+              <input class="input" name="email" type="email" placeholder="you@example.com" required />
+              <textarea class="input" name="message" placeholder="How can we help?" rows="4" style="grid-column:1/-1" required></textarea>
+            </div>
+            <div style="margin-top:10px; display:flex; gap:8px; align-items:center;">
+              <button class="btn" type="submit">Send</button>
+              <small class="muted">Or email us: <a href="mailto:michellenesfield94@gmail.com">michellenesfield94@gmail.com</a></small>
+            </div>
+          </form>
+        </div>
+        <div class="card">
+          <h3>Info</h3>
+          <p><b>Email:</b> <a href="mailto:michellenesfield94@gmail.com">michellenesfield94@gmail.com</a></p>
+          <p><b>Location:</b> Nigeria</p>
+          <p class="muted">Response time: 24–48 hours. For urgent issues, use email.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Admin Dashboard -->
+  <section id="admin" class="section">
+    <div class="container">
+      <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:14px;">
+        <h2>Admin Dashboard</h2>
+        <button class="btn secondary" onclick="scrollToId('home')">← Back to Site</button>
+      </div>
+
+      <div class="tabs" role="tablist">
+        <button class="tab active" data-tab="overview">Overview</button>
+        <button class="tab" data-tab="orders">Orders</button>
+        <button class="tab" data-tab="products">Products</button>
+        <button class="tab" data-tab="customers">Customers</button>
+        <button class="tab" data-tab="messages">Messages</button>
+        <button class="tab" data-tab="settings">Settings</button>
+      </div>
+
+      <!-- OVERVIEW -->
+      <div class="tabpane" id="tab-overview" style="margin-top:14px;">
+        <div class="kpis">
+          <div class="kpi"><div class="muted">Revenue (30d)</div><div id="kpiRevenue" style="font-size:22px; font-weight:800;">$0.00</div></div>
+          <div class="kpi"><div class="muted">Orders</div><div id="kpiOrders" style="font-size:22px; font-weight:800;">0</div></div>
+          <div class="kpi"><div class="muted">Customers</div><div id="kpiCustomers" style="font-size:22px; font-weight:800;">0</div></div>
+          <div class="kpi"><div class="muted">Open Messages</div><div id="kpiMessages" style="font-size:22px; font-weight:800;">0</div></div>
+        </div>
+        <div class="card" style="margin-top:14px;">
+          <h3>Sales (last 6 months)</h3>
+          <canvas id="salesChart" height="160"></canvas>
+        </div>
+      </div>
+
+      <!-- ORDERS -->
+      <div class="tabpane hidden" id="tab-orders" style="margin-top:14px;">
+        <div class="card">
+          <div class="toolbar">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input id="orderSearch" class="input" placeholder="Search orders…" />
+              <select id="orderFilter">
+                <option value="All">All</option>
+                <option>Processing</option>
+                <option>Shipped</option>
+                <option>Delivered</option>
+                <option>Cancelled</option>
+              </select>
+            </div>
+            <small class="muted">Orders are demo data (stored locally)</small>
+          </div>
+          <div style="overflow:auto;">
+            <table class="table" id="ordersTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRODUCTS -->
+      <div class="tabpane hidden" id="tab-products" style="margin-top:14px;">
+        <div class="card">
+          <div class="toolbar">
+            <div style="display:flex; gap:8px; align-items:center;">
+              <input id="adminProductSearch" class="input" placeholder="Search products…" />
+              <select id="adminProductFilter"></select>
+            </div>
+            <div style="display:flex; gap:8px;">
+              <button class="btn" onclick="openProductModal()">Add Product</button>
+              <button class="btn secondary" onclick="resetProducts()">Reset Demo Data</button>
+            </div>
+          </div>
+          <div style="overflow:auto;">
+            <table class="table" id="productsTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- CUSTOMERS -->
+      <div class="tabpane hidden" id="tab-customers" style="margin-top:14px;">
+        <div class="card">
+          <div style="overflow:auto;">
+            <table class="table" id="customersTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- MESSAGES -->
+      <div class="tabpane hidden" id="tab-messages" style="margin-top:14px;">
+        <div class="card">
+          <div style="overflow:auto;">
+            <table class="table" id="messagesTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="tabpane hidden" id="tab-settings" style="margin-top:14px;">
+        <div class="card">
+          <div style="display:grid; gap:12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div>
+              <div class="muted">Store name</div>
+              <input id="settingStoreName" class="input" value="GreenAura" />
+            </div>
+            <div>
+              <div class="muted">Support email</div>
+              <input id="settingEmail" class="input" value="michellenesfield94@gmail.com" />
+            </div>
+            <div>
+              <div class="muted">Currency</div>
+              <select id="settingCurrency" class="input">
+                <option>USD</option>
+                <option>NGN</option>
+                <option>EUR</option>
+              </select>
+            </div>
+            <div style="grid-column:1/-1;">
+              <div class="muted">About your brand</div>
+              <textarea id="settingAbout" class="input" rows="4">At GreenAura, we blend science with nature to craft products that are gentle, effective, and planet-friendly.</textarea>
+            </div>
+            <label style="display:flex; gap:8px; align-items:center;">
+              <input type="checkbox" id="settingMaintenance" /> Maintenance mode (hide storefront)
+            </label>
+            <div style="grid-column:1/-1;">
+              <button class="btn" onclick="saveSettings()">Save Settings</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <div class="container footer-inner">
+      <div style="display:flex; gap:8px; align-items:center; color:var(--slate-700)">🌿 <b>GreenAura</b></div>
+      <div class="muted">Contact: <a href="mailto:michellenesfield94@gmail.com">michellenesfield94@gmail.com</a></div>
+      <div class="muted">© <span id="year"></span> GreenAura</div>
+    </div>
+  </footer>
+
+  <!-- Product Modal -->
+  <div id="productModalBackdrop" class="modal-backdrop" role="dialog" aria-modal="true">
+    <div class="modal">
+      <header class="nav" style="padding:0 0 10px;">
+        <h3 id="productModalTitle">Add Product</h3>
+        <button class="close" onclick="closeProductModal()">✕</button>
+      </header>
+      <div style="display:grid; gap:10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+        <input id="pm_id" class="input" placeholder="ID (e.g., GA-201)" />
+        <input id="pm_name" class="input" placeholder="Name" />
+        <input id="pm_price" type="number" step="0.01" class="input" placeholder="Price" />
+        <input id="pm_stock" type="number" class="input" placeholder="Stock" />
+        <input id="pm_tag" class="input" placeholder="Tag (e.g., Skincare)" />
+        <input id="pm_image" class="input" placeholder="Image URL (optional)" />
+      </div>
+      <div style="margin-top:12px; display:flex; gap:8px; justify-content:flex-end;">
+        <button class="btn secondary" onclick="closeProductModal()">Cancel</button>
+        <button class="btn" id="pm_save" onclick="saveProductFromModal()">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --------- Data (with localStorage persistence) ---------
+    const LS_KEYS = {
+      products: 'ga_products',
+      orders: 'ga_orders',
+      customers: 'ga_customers',
+      messages: 'ga_messages',
+      settings: 'ga_settings',
+    };
+
+    const demo = {
+      products: [
+        { id: 'GA-101', name: 'Aloe Glow Serum', price: 24.99, stock: 42, tag: 'Skincare', image: '' },
+        { id: 'GA-102', name: 'Bamboo Detox Soap', price: 9.99, stock: 120, tag: 'Body', image: '' },
+        { id: 'GA-103', name: 'Citrus Aura Mist', price: 14.5, stock: 63, tag: 'Aromatherapy', image: '' },
+        { id: 'GA-104', name: 'Eco Cotton Tote', price: 12.0, stock: 80, tag: 'Merch', image: '' },
+        { id: 'GA-105', name: 'Herbal Scalp Oil', price: 19.99, stock: 34, tag: 'Haircare', image: '' },
+      ],
+      orders: [
+        { id: 'ORD-2001', customer: 'Adaeze U.', total: 64.97, status: 'Processing', items: 3 },
+        { id: 'ORD-2002', customer: 'Chinedu I.', total: 24.99, status: 'Shipped', items: 1 },
+        { id: 'ORD-2003', customer: 'Maryam B.', total: 39.48, status: 'Delivered', items: 2 },
+        { id: 'ORD-2004', customer: 'Samuel A.', total: 12.0, status: 'Cancelled', items: 1 },
+      ],
+      customers: [
+        { id: 'C-01', name: 'Adaeze U.', email: 'adaeze@example.com', orders: 4, spend: 152.8 },
+        { id: 'C-02', name: 'Chinedu I.', email: 'chinedu@example.com', orders: 2, spend: 59.0 },
+        { id: 'C-03', name: 'Maryam B.', email: 'maryam@example.com', orders: 5, spend: 180.2 },
+      ],
+      messages: [
+        { id: 1, name: 'Tolu', email: 'tolu@example.com', message: 'Do you ship to Abuja?', status: 'Open' },
+        { id: 2, name: 'Kim', email: 'kim@example.com', message: 'Allergic ingredients list please.', status: 'Open' },
+        { id: 3, name: 'Zara', email: 'zara@example.com', message: 'Great serum!', status: 'Closed' },
+      ],
+      settings: {
+        storeName: 'GreenAura',
+        email: 'michellenesfield94@gmail.com',
+        currency: 'USD',
+        about: 'At GreenAura, we blend science with nature to craft products that are gentle, effective, and planet-friendly.',
+        maintenance: false,
+      },
+      blog: [
+        { id: 1, title: '5 ways to start an eco‑friendly routine', excerpt: 'Small daily changes add up…', date: 'Aug 1, 2025' },
+        { id: 2, title: 'Ingredient spotlight: Aloe Vera', excerpt: 'Why aloe soothes and heals', date: 'Jul 18, 2025' },
+        { id: 3, title: 'Recycling 101 at home', excerpt: 'Make your bin work smarter', date: 'Jun 30, 2025' },
+      ],
+      sales: [3200, 4100, 3700, 5200, 6100, 5800],
+    };
+
+    const state = {
+      products: load(LS_KEYS.products, demo.products),
+      orders: load(LS_KEYS.orders, demo.orders),
+      customers: load(LS_KEYS.customers, demo.customers),
+      messages: load(LS_KEYS.messages, demo.messages),
+      settings: load(LS_KEYS.settings, demo.settings),
+    };
+
+    function load(key, fallback) {
+      try { const x = JSON.parse(localStorage.getItem(key)); return Array.isArray(fallback) ? (x || fallback) : (x || fallback); } catch { return fallback; }
+    }
+    function save(key, data) { localStorage.setItem(key, JSON.stringify(data)); }
+
+    // --------- Helpers ---------
+    function $(sel) { return document.querySelector(sel); }
+    function $all(sel) { return Array.from(document.querySelectorAll(sel)); }
+    function scrollToId(id) { document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }); }
+
+    // --------- Navigation / Link highlighting ---------
+    $all('[data-link]').forEach(a => a.addEventListener('click', (e) => {
+      $all('[data-link]').forEach(x => x.classList.remove('active'));
+      e.target.classList.add('active');
+      const href = e.target.getAttribute('href');
+      if (href?.startsWith('#')) {
+        e.preventDefault();
+        const id = href.slice(1);
+        if (id === 'admin') { showAdmin(true); } else { showAdmin(false); scrollToId(id); }
+      }
+    }));
+
+    function goAdmin(tab) {
+      showAdmin(true);
+      setTimeout(() => selectTab(tab), 50);
+      document.getElementById('adminLink').classList.add('active');
+    }
+
+    function showAdmin(show) {
+      document.getElementById('admin').style.display = show ? 'block' : 'none';
+      if (state.settings.maintenance && !show) {
+        alert('Storefront is in maintenance mode. You can disable it in Settings.');
+      }
+    }
+
+    // --------- Public site renders ---------
+    function renderProductsPublic() {
+      const grid = document.getElementById('productGrid');
+      const q = document.getElementById('productSearch').value.toLowerCase();
+      const filter = document.getElementById('productFilter').value;
+      const list = state.products.filter(p =>
+        (!q || p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)) &&
+        (filter === 'All' || p.tag === filter)
+      );
+      grid.innerHTML = list.map(p => `
+        <div class="card">
+          <img class="img" src="${p.image || `https://picsum.photos/seed/${encodeURIComponent(p.name)}/640/480`}" alt="${p.name}">
+          <h3>${p.name}</h3>
+          <div class="muted">${p.tag} • Stock: ${p.stock}</div>
+          <div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px;">
+            <b>${formatCurrency(p.price)}</b>
+            <button class="btn secondary" onclick="alert('Added to cart (demo)')">Add to Cart</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderProductFilters() {
+      const selPublic = document.getElementById('productFilter');
+      const tags = Array.from(new Set(state.products.map(p => p.tag)));
+      selPublic.innerHTML = `<option>All</option>` + tags.map(t => `<option>${t}</option>`).join('');
+
+      const selAdmin = document.getElementById('adminProductFilter');
+      selAdmin.innerHTML = `<option>All</option>` + tags.map(t => `<option>${t}</option>`).join('');
+    }
+
+    function renderBlog() {
+      const grid = document.getElementById('blogGrid');
+      grid.innerHTML = demo.blog.map(b => `
+        <div class="card">
+          <span class="badge">${b.date}</span>
+          <h3>${b.title}</h3>
+          <p class="muted">${b.excerpt}</p>
+          <a href="#" onclick="event.preventDefault(); alert('Demo: open blog post')">Read more →</a>
+        </div>
+      `).join('');
+    }
+
+    // --------- Admin: tabs ---------
+    $all('.tab').forEach(btn => btn.addEventListener('click', () => selectTab(btn.dataset.tab)));
+    function selectTab(key) {
+      $all('.tab').forEach(b => b.classList.toggle('active', b.dataset.tab === key));
+      $all('.tabpane').forEach(p => p.classList.add('hidden'));
+      const el = document.getElementById('tab-' + key);
+      if (el) el.classList.remove('hidden');
+      if (key === 'overview') drawChart();
+      if (key === 'orders') renderOrders();
+      if (key === 'products') renderProductsAdmin();
+      if (key === 'customers') renderCustomers();
+      if (key === 'messages') renderMessages();
+    }
+
+    // --------- Admin: Overview / KPIs / Chart ---------
+    function refreshKpis() {
+      $('#kpiRevenue').textContent = formatCurrency(state.orders.reduce((a, b) => a + (b.status !== 'Cancelled' ? b.total : 0), 0));
+      $('#kpiOrders').textContent = state.orders.length;
+      $('#kpiCustomers').textContent = state.customers.length;
+      $('#kpiMessages').textContent = state.messages.filter(m => m.status === 'Open').length;
+    }
+
+    function drawChart() {
+      const c = document.getElementById('salesChart');
+      const ctx = c.getContext('2d');
+      const w = c.width = c.clientWidth * devicePixelRatio;
+      const h = c.height = c.clientHeight * devicePixelRatio;
+      ctx.scale(devicePixelRatio, devicePixelRatio);
+      ctx.clearRect(0,0,w,h);
+      const padding = 30;
+      const data = demo.sales; // static demo
+      const max = Math.max(...data) * 1.2;
+      const stepX = (c.clientWidth - padding*2) / (data.length - 1);
+      ctx.strokeStyle = '#94d3ac';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      data.forEach((val, i) => {
+        const x = padding + i * stepX;
+        const y = c.clientHeight - padding - (val / max) * (c.clientHeight - padding*2);
+        if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+      // Axes
+      ctx.strokeStyle = '#e2e8f0'; ctx.lineWidth = 1; ctx.beginPath();
+      ctx.moveTo(padding, padding); ctx.lineTo(padding, c.clientHeight - padding); ctx.lineTo(c.clientWidth - padding, c.clientHeight - padding); ctx.stroke();
+    }
+
+    // --------- Admin: Orders ---------
+    function renderOrders() {
+      const q = $('#orderSearch').value.toLowerCase();
+      const f = $('#orderFilter').value;
+      const rows = state.orders.filter(o =>
+        (!q || o.id.toLowerCase().includes(q) || o.customer.toLowerCase().includes(q)) &&
+        (f === 'All' || o.status === f)
+      ).map(o => `
+        <tr>
+          <td><b>${o.id}</b></td>
+          <td>${o.customer}</td>
+          <td>${o.items}</td>
+          <td>${formatCurrency(o.total)}</td>
+          <td><span class="badge">${o.status}</span></td>
+        </tr>
+      `).join('');
+      $('#ordersTable').innerHTML = `
+        <thead><tr><th>Order ID</th><th>Customer</th><th>Items</th><th>Total</th><th>Status</th></tr></thead>
+        <tbody>${rows}</tbody>`;
+    }
+
+    // --------- Admin: Products (CRUD) ---------
+    let editingProductId = null;
+    function renderProductsAdmin() {
+      const q = $('#adminProductSearch').value.toLowerCase();
+      const f = $('#adminProductFilter').value;
+      const rows = state.products.filter(p =>
+        (!q || p.name.toLowerCase().includes(q) || p.id.toLowerCase().includes(q)) &&
+        (f === 'All' || p.tag === f)
+      ).map(p => `
+        <tr>
+          <td><b>${p.id}</b></td>
+          <td>${p.name}</td>
+          <td>${formatCurrency(p.price)}</td>
+          <td>${p.stock}</td>
+          <td>${p.tag}</td>
+          <td style="white-space:nowrap;">
+            <button class="btn secondary" onclick="openProductModal('${p.id}')">Edit</button>
+            <button class="btn" style="background:#ef4444" onclick="deleteProduct('${p.id}')">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+      $('#productsTable').innerHTML = `
+        <thead><tr><th>ID</th><th>Name</th><th>Price</th><th>Stock</th><th>Tag</th><th>Actions</th></tr></thead>
+        <tbody>${rows}</tbody>`;
+    }
+
+    function openProductModal(id = null) {
+      editingProductId = id;
+      $('#productModalTitle').textContent = id ? 'Edit Product' : 'Add Product';
+      const p = id ? state.products.find(x => x.id === id) : { id: '', name: '', price: '', stock: '', tag: '', image: '' };
+      $('#pm_id').value = p.id; $('#pm_name').value = p.name; $('#pm_price').value = p.price; $('#pm_stock').value = p.stock; $('#pm_tag').value = p.tag; $('#pm_image').value = p.image || '';
+      $('#productModalBackdrop').style.display = 'flex';
+    }
+    function closeProductModal() { $('#productModalBackdrop').style.display = 'none'; }
+    function saveProductFromModal() {
+      const obj = {
+        id: $('#pm_id').value.trim(),
+        name: $('#pm_name').value.trim(),
+        price: parseFloat($('#pm_price').value || '0'),
+        stock: parseInt($('#pm_stock').value || '0'),
+        tag: $('#pm_tag').value.trim() || 'General',
+        image: $('#pm_image').value.trim(),
+      };
+      if (!obj.id || !obj.name) { alert('ID and Name are required'); return; }
+      const idx = state.products.findIndex(x => x.id === obj.id);
+      if (editingProductId && editingProductId !== obj.id && idx !== -1) {
+        alert('A product with this ID already exists.'); return;
+      }
+      if (editingProductId) {
+        const i = state.products.findIndex(x => x.id === editingProductId);
+        state.products[i] = obj;
+      } else {
+        if (idx !== -1) { alert('Duplicate ID'); return; }
+        state.products.push(obj);
+      }
+      save(LS_KEYS.products, state.products);
+      renderProductFilters();
+      renderProductsAdmin();
+      renderProductsPublic();
+      closeProductModal();
+    }
+    function deleteProduct(id) {
+      if (!confirm('Delete this product?')) return;
+      state.products = state.products.filter(p => p.id !== id);
+      save(LS_KEYS.products, state.products);
+      renderProductFilters();
+      renderProductsAdmin();
+      renderProductsPublic();
+    }
+    function resetProducts() {
+      if (!confirm('Reset products to demo data?')) return;
+      state.products = JSON.parse(JSON.stringify(demo.products));
+      save(LS_KEYS.products, state.products);
+      renderProductFilters();
+      renderProductsAdmin();
+      renderProductsPublic();
+    }
+
+    // --------- Admin: Customers ---------
+    function renderCustomers() {
+      const rows = state.customers.map(c => `
+        <tr>
+          <td>${c.name}</td>
+          <td>${c.email}</td>
+          <td>${c.orders}</td>
+          <td>${formatCurrency(c.spend)}</td>
+        </tr>
+      `).join('');
+      $('#customersTable').innerHTML = `
+        <thead><tr><th>Name</th><th>Email</th><th>Orders</th><th>Total Spend</th></tr></thead>
+        <tbody>${rows}</tbody>`;
+    }
+
+    // --------- Admin: Messages ---------
+    function renderMessages() {
+      const rows = state.messages.map(m => `
+        <tr>
+          <td>${m.name}</td>
+          <td>${m.email}</td>
+          <td>${m.message}</td>
+          <td>
+            <span class="badge">${m.status}</span>
+            <button class="btn secondary" style="margin-left:8px" onclick="toggleMessage(${m.id})">Toggle</button>
+          </td>
+        </tr>
+      `).join('');
+      $('#messagesTable').innerHTML = `
+        <thead><tr><th>Name</th><th>Email</th><th>Message</th><th>Status</th></tr></thead>
+        <tbody>${rows}</tbody>`;
+    }
+    function toggleMessage(id) {
+      state.messages = state.messages.map(m => m.id === id ? { ...m, status: m.status === 'Open' ? 'Closed' : 'Open' } : m);
+      save(LS_KEYS.messages, state.messages);
+      renderMessages();
+      refreshKpis();
+    }
+
+    // --------- Admin: Settings ---------
+    function saveSettings() {
+      state.settings = {
+        storeName: $('#settingStoreName').value.trim() || 'GreenAura',
+        email: $('#settingEmail').value.trim() || 'michellenesfield94@gmail.com',
+        currency: $('#settingCurrency').value,
+        about: $('#settingAbout').value.trim(),
+        maintenance: $('#settingMaintenance').checked,
+      };
+      save(LS_KEYS.settings, state.settings);
+      alert('Settings saved');
+    }
+
+    // --------- Public: Contact form → messages (demo) ---------
+    function sendMessage(e) {
+      e.preventDefault();
+      const form = e.target;
+      const data = Object.fromEntries(new FormData(form).entries());
+      const id = Math.max(0, ...state.messages.map(m => m.id)) + 1;
+      state.messages.unshift({ id, name: data.name, email: data.email, message: data.message, status: 'Open' });
+      save(LS_KEYS.messages, state.messages);
+      form.reset();
+      alert('Message sent! We will reply by email.');
+      refreshKpis();
+    }
+
+    // --------- Utils ---------
+    function formatCurrency(n) {
+      const cur = (state.settings && state.settings.currency) || 'USD';
+      const map = { USD: '$', NGN: '₦', EUR: '€' };
+      const sym = map[cur] || '$';
+      return `${sym}${Number(n).toFixed(2)}`;
+    }
+
+    // --------- Init ---------
+    function init() {
+      document.getElementById('year').textContent = new Date().getFullYear();
+
+      renderProductFilters();
+      renderProductsPublic();
+      renderBlog();
+      refreshKpis();
+      drawChart();
+
+      // Wire public controls
+      $('#productSearch').addEventListener('input', renderProductsPublic);
+      $('#productFilter').addEventListener('change', renderProductsPublic);
+
+      // Wire orders controls
+      $('#orderSearch').addEventListener('input', renderOrders);
+      $('#orderFilter').addEventListener('change', renderOrders);
+
+      // Wire admin product controls
+      $('#adminProductSearch').addEventListener('input', renderProductsAdmin);
+      $('#adminProductFilter').addEventListener('change', renderProductsAdmin);
+
+      // Maintenance mode notice on load
+      if (state.settings.maintenance) alert('Storefront is currently hidden (maintenance mode).');
+    }
+    window.addEventListener('load', init);
+  </script>
+</body>
+</html>
